@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window'); 
 
 const Theme = StyleSheet.create({
     basic_container: {
@@ -100,6 +100,14 @@ const Theme = StyleSheet.create({
 
     //Icon Color ==============
     Purple_Icon: { borderColor: "#B865FA" },
+
+    // Drive Mode ============={}
+    driver_font_color: {color: "#414141"},
+    driver_para_font_color: {color: "#A0A0A0"},
+    driver_btn_bg_color: {backgroundColor: "#7E57C2"}, 
+    
+    
+
 
 });
 

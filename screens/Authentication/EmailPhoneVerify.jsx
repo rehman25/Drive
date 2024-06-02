@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View , Image} from 'react-native';
 import React from 'react';
 import Header from '../../components/header/header';
-import Theme from '../../assets/theme/theme';
+import Theme from '../../assets/theme/Theme';
 import { SimpleInput , List } from '../../assets/input/input';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {SubmitButton} from '../../assets/buttons/button'

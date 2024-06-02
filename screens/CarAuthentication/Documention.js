@@ -1,16 +1,71 @@
-import {StyleSheet, Text, View, Button, Image} from 'react-native';
-import React, {useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Image,
+  Modal,
+  Pressable,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import Header from '../../components/header/header';
 import {SimpleInput} from '../../assets/input/input';
-import Theme from '../../assets/theme/theme';
+import Theme from '../../assets/theme/Theme';
 import {SubmitButton, OutlineButton} from '../../assets/buttons/button';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {useNavigation} from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/AntDesign';
+import WaitingImage from '../../images/carAdd/waiting.png';
 
 const Documentation = () => {
   const [imageUri, setImageUri] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
+  const [modalConfirmLocation, setModalConfirmLocation] = useState(false);4
+  const [isOnboarding, setOnboarding] = useState(false);
+  const [countdown, setCountdown] = useState(48 * 60 * 60);
+
+  const toggleModalConfirmLocation = () => {
+    setModalConfirmLocation(!modalConfirmLocation);
+
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.navigate('Login')
+    }, 2000);
+  }, []);
+
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setOnboarding(true);
+    }, 2500);
+
+    const interval = setInterval(() => {
+      setCountdown(prevCountdown => {
+        if (prevCountdown <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prevCountdown - 1;
+      });
+    }, 1000);
+
+
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
+  }, []);
+
+  const formatTime = (seconds) => {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
 
   const openGallery = () => {
     launchImageLibrary(
@@ -72,12 +127,21 @@ const Documentation = () => {
     <View style={styles.Container}>
       <Header backtoPage2={true} backtoPage={true} title={'back'} />
       <View style={{marginTop: 15}}>
-        <Text style={styles.Heading}>Upload Documents</Text>
+        <Text style={styles.Heading}>Add Photos and other documents</Text>
       </View>
       <View style={styles.ImageContainer}>
-          <div className={styles.UploadBox}>
-              
-          </div>
+        <Text style={styles.headtext}>Upload Photos</Text>
+        <View style={styles.UploadBox}>
+          <Icon name="plus" />
+        </View>
+        <Text style={styles.headtext}>Upload Photos</Text>
+        <View style={styles.UploadBox}>
+          <Icon name="plus" />
+        </View>
+        <Text style={styles.headtext}>Upload Photos</Text>
+        <View style={styles.UploadBox}>
+          <Icon name="plus" />
+        </View>
         {/* <Button title="Pick an image from gallery" onPress={openGallery} /> */}
         {/* {imageUri && <Image source={{uri: imageUri}} style={styles.image} />} */}
         {/* <Button
@@ -91,8 +155,30 @@ const Documentation = () => {
 
       <View style={styles.btnContainer}>
         <OutlineButton text={'Cancel'} outbuttonsty={styles.outlinebtn} />
-        {/* <SubmitButton text="Submit" buttonsty={styles.submitbtn} onPress={handleLogin} /> */}
+        <SubmitButton
+          text="Next"
+          buttonsty={styles.submitbtn}
+          onPress={toggleModalConfirmLocation}
+        />
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalConfirmLocation}
+        onRequestClose={toggleModalConfirmLocation}>
+        <View style={styles.centeredViewConfirm}>
+          <View style={styles.modalViewConfirm}>
+            <View style={{flex:0.6, margin:5, justifyContent:"center", alignItems:"center"}}>
+             <Image source={WaitingImage} style={{width:100, height:100}} />
+              <Text style={styles.Approval}>Please Wait For Approval</Text>
+            </View>
+            <View style={{flex:0.3, margin:5, justifyContent:"flex-start", alignItems:"center"}}>
+              <Text style={styles.timeleft}>Time left</Text>
+              <Text style={styles.count}>{formatTime(countdown)}</Text>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -100,6 +186,63 @@ const Documentation = () => {
 export default Documentation;
 
 const styles = StyleSheet.create({
+  count:{
+    ...Theme.Font_family,
+    ...Theme.driver_para_font_color,
+    fontSize:20,
+    fontWeight:"800",
+  },
+  timeleft:{
+    ...Theme.Font_family,
+    ...Theme.driver_para_font_color,
+    fontSize:20,
+    fontWeight:"800",
+  },
+  Approval:{
+    ...Theme.Font_family,
+    ...Theme.driver_font_color,
+    fontSize:20,
+    fontWeight:"600",
+  },
+  centeredViewConfirm: {
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    //  alignItems: 'center',
+  },
+  modalViewConfirm: {
+    backgroundColor: '#ffff',
+    width: '90%',
+    height: '50%',
+    borderRadius: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    padding:20,
+  },
+  headtext: {
+    color: '#414141',
+    fontSize: 16,
+    fontWeight: '400',
+    marginTop: 10,
+  },
+  UploadBox: {
+    borderWidth: 1,
+    borderColor: '#D0D0D0',
+    borderRadius: 6,
+    padding: 10,
+    marginTop: 10,
+    justifyContent: 'center',
+    flex: 0.3,
+    alignItems: 'center',
+  },
+  ImageContainer: {
+    flex: 1,
+    marginTop: 10,
+    // padding:10,
+  },
   submitbtn: {
     width: 160,
     margin: 5,

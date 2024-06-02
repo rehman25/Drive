@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Header from '../../components/header/header'
 import { SimpleInput } from '../../assets/input/input'
-import Theme from '../../assets/theme/theme'
+import Theme from '../../assets/theme/Theme'
 import{SubmitButton,OutlineButton } from  '../../assets/buttons/button'
 import { useNavigation } from '@react-navigation/native'
 

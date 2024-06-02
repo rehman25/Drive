@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View , Image , useWindowDimensions   } from 'react-native'
 import React from 'react'
-import Theme from '../../assets/theme/theme'
+import Theme from '../../assets/theme/Theme'
 // import Logo from '../../images/splashScreen/logo.png'
 // import Data from './data'
 

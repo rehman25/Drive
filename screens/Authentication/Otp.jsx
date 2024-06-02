@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { OtpInput } from '../../assets/input/input'
 import Header from '../../components/header/header'
-import Theme from '../../assets/theme/theme'
+import Theme from '../../assets/theme/Theme'
 import { SubmitButton } from '../../assets/buttons/button'
 import { useNavigation } from '@react-navigation/native'
 

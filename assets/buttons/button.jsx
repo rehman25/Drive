@@ -1,13 +1,13 @@
 import {  StyleSheet, Text, View, TouchableOpacity, Dimensions, Image  } from 'react-native'
 import react, {useState} from 'react'
 const { width, height } = Dimensions.get('window');
-import theme from '../theme/theme'
+import theme from '../theme/Theme'
 import { Button, Icon, WhiteSpace, WingBlank } from '@ant-design/react-native'
 function SubmitButton({ text, onPress, btnStyle, buttonsty, textbtnsty, disabled }) {
     return (
         <>
             <View style={{ ...styles.btnContainer, ...btnStyle }}>
-                <TouchableOpacity style={{...styles.btnStyleReq ,  ...buttonsty, ...theme.bg_Purple_color}} onPress={() => { onPress() }} disabled={disabled} >
+                <TouchableOpacity style={{...styles.btnStyleReq ,  ...buttonsty, ...theme.driver_btn_bg_color}} onPress={() => { onPress() }} disabled={disabled} >
                     <Text style={{ ...styles.textBtnReq, fontFamily: "Poppins-Bold", ...textbtnsty }}>{text}</Text>
                 </TouchableOpacity>
             </View>
@@ -74,9 +74,9 @@ const styles = StyleSheet.create({
     // OUT-LINE BUTTON =========================
     btnStyleOutline: {
         backgroundColor: "#ffff",
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: "#B865FA",
-        padding:14,
+        padding:13,
         borderRadius: 8,
     },
     textBtnOutline: {

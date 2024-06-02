@@ -1,74 +1,65 @@
-import { StyleSheet, Text, View, FlatList, Animated } from 'react-native';
-import React, { useState, useRef } from 'react';
-import Carousel from './Carorsal'; // Corrected typo
-import Paginator from './paginator';
-import Data from './data';
-import { useNavigation } from '@react-navigation/native';
+import {StyleSheet, Text, View,Image} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
+import SplashImage from '../../images/splashScreen/logo.png';
+import Boarding from './Onboarding';
+import Theme from '../../assets/theme/Theme';
+
 
 const SplashScreen = () => {
-  const navigation = useNavigation();
-  const [currentIndex, setCurrentIndex] = useState(0);
+
+
+
+useEffect(() => {
   
-  const viewableItemsChanged = useRef(({ viewableItems }) => {
-    setCurrentIndex(viewableItems[0]?.index || 0); // Ensure to handle the case when viewableItems is empty
-  }).current;
+  setTimeout(() => {
+     setOnboarding(true);
+  }, 2500);
+}, []);
 
-  const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current; // Corrected typo
+  const [isOnboarding, setOnboarding] = useState(false);
 
-  const slidesRef = useRef(null);
-  const scrollX = useRef(new Animated.Value(0)).current;
-
-  const handleNavigation = () => {
-    navigation.navigate('LocationEnable');
-  }
   return (
     <View style={styles.container}>
-      <View style={{flex:0.09 ,alignItems:"flex-end"} }>
-        <Text style={styles.SkipText} onPress={handleNavigation}>skip</Text>
-      </View>
-      <View style={{ flex: 3  }}>
-        <FlatList
-          data={Data}
-          renderItem={({ item }) => <Carousel item={item} />}
-          horizontal
-          showsHorizontalScrollIndicator={false} // Corrected typo
-          pagingEnabled
-          bounces={false}
-          keyExtractor={(item) => item.id} // Ensure to convert id to string
-          onScroll={Animated.event(
-            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-            {
-              useNativeDriver: false,
-            }
-          )}
-          scrollEventThrottle={32}
-          onViewableItemsChanged={viewableItemsChanged}
-          viewabilityConfig={viewConfig}
-          ref={slidesRef}
-        />
-      </View>
-      <Paginator 
-        data={Data} 
-          scrollX={scrollX}
-      />
+      {isOnboarding ? (
+        <Boarding />
+        
+      ) : (
+        <>
+          <View style={styles.imagecont}>
+            <Image source={SplashImage} style={styles.logo} />
+          </View>
+          <View style={styles.TextCont}>
+            <Text style={styles.text}>Welcome</Text>
+          </View>
+        </>
+      )}
+
     </View>
   );
 };
 
-
-
 export default SplashScreen;
-
-
 
 const styles = StyleSheet.create({
   container: {
-    padding:10,
+    padding: 10,
     flex: 1,
-    backgroundColor: 'white', // Example background color
+    backgroundColor: 'white',
   },
-  SkipText:{
-    fontSize:16,
-    fontWeight:"600",
+  imagecont:{
+    flex:0.5,
+    justifyContent:'flex-end',
+    alignItems:'center',
+  },
+  TextCont:{
+    flex:0.5,
+    justifyContent:'center',
+    alignItems:'center',
+  },
+  text:{
+    ...Theme.Font_family,
+    ...Theme.driver_font_color,
+    fontSize:24,
+    fontWeight:'bold',
   }
 });

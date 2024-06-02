@@ -29,10 +29,16 @@ import CustomeDrawer from '../components/drawer/drawer'
 import AddCar from '../screens/CarAuthentication/AddCar';
 import CarDetail from '../screens/CarAuthentication/CarDetail';
 import Documention from '../screens/CarAuthentication/Documention';
+import Onboarding from '../screens/Splash/Onboarding';
+import Successfully from '../screens/Authentication/Successfully';
+import RegisterCar from '../screens/CarAuthentication/RegisterCar';
+import Massage from '../screens/Home/Massage';
+import Payment from '../screens/Home/Payment';
 
 const MainNavigation = () => {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const Drawer = createDrawerNavigator();
+  
 
   const Stack = createStackNavigator();
   // useEffect(() => {
@@ -81,12 +87,15 @@ const MainNavigation = () => {
             headerShown: false,
           }}>
           <Stack.Screen name="SplashScreen" component={SplashScreen} />
+          <Stack.Screen name="Onboarding" component={Onboarding} />
           {/* <Stack.Screen name="Carosal" component={Carorsal}/> */}
 
           <Stack.Screen name="Login">
             {props => <Login {...props} onLogin={() => setIsLoggedIn(true)} />}
           </Stack.Screen>
           <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen name="Successfully" component={Successfully} />
+          <Stack.Screen name="RegisterCar" component={RegisterCar} />
           <Stack.Screen name="LocationEnable" component={LocationEnable} />
           {/* <Stack.Screen name="HomeScreen" component={HomeScreen} /> */}
           <Stack.Screen name="LoginSplash" component={LoginSplash} />
@@ -98,8 +107,13 @@ const MainNavigation = () => {
           <Stack.Screen name="CarDetail" component={CarDetail} />
           <Stack.Screen name="Documention" component={Documention} />
           <Stack.Screen name="Home" component={TabNavigation} />
+          <Stack.Screen name="Massage" component={Massage} />
+          <Stack.Screen name="Payment" component={Payment} />
+
         </Stack.Navigator>
       )}
+      
+
     </NavigationContainer>
   );
 };

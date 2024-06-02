@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, TextInput, Picker } from 'react-native'
 import Checkbox from 'react-native-check-box';
 import DropDownPicker from 'react-native-dropdown-picker';
-import Theme from '../theme/theme'
+import Theme from '../theme/Theme'
 import  Icon  from 'react-native-vector-icons/Ionicons';
 // import Icons from './Icons';
 

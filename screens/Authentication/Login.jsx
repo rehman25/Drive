@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View , Image} from 'react-native';
-import React from 'react';
+import React,{useState , useEffect} from 'react';
 import Header from '../../components/header/header';
-import Theme from '../../assets/theme/theme';
+import Theme from '../../assets/theme/Theme';
 import { SimpleInput , List } from '../../assets/input/input';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {SubmitButton} from '../../assets/buttons/button'
@@ -10,9 +10,23 @@ import { SearchInput } from '../../assets/input/input';
 import Gmail from '../../images/signup/gmail.png'
 import Apple from '../../images/signup/Apple.png'
 import { useNavigation } from '@react-navigation/native';
+import { connect } from 'react-redux';
+import * as Actions from '../../Store/Actions/login/index'
 
 
-const Login = () => {
+const Login = ({
+  // Red_Login,
+  // GET_ALL_COMPANY_DATA
+}) => {
+
+
+  useEffect(() => {
+    GET_ALL_COMPANY_DATA()
+  }, []);
+
+  const Data = Red_Login
+  console.log(Data, "data")
+
  const Navigation = useNavigation()
  const NavigationOtp = () => {
    Navigation.navigate('EmailPhoneVerify')
@@ -57,8 +71,12 @@ const Login = () => {
     </View>
   );
 };
+//  function mapStateToProps({Red_Login}) {
+//       return {Red_Login};
+//  }
 
-export default Login;
+// export default connect(mapStateToProps, Actions)(Login);
+export default Login
 
 const styles = StyleSheet.create({
   container: {
