@@ -24,6 +24,7 @@ import Theme from '../../assets/theme/Theme';
 import Phone from '../../images/Home/phone_.png';
 import Comment from '../../images/Home/comment.png';
 import { useNavigation } from '@react-navigation/native';
+import Header from '../../components/Header';
 
 
 
@@ -49,9 +50,14 @@ const HomeScreen = () => {
   
 
   useEffect(() => {
-    setTimeout(() => {
+    // Function to toggle modal visibility
+    const toggleModal = () => {
       setModalVisible(true);
-    }, 3000);
+    };
+
+    const intervalId = setInterval(toggleModal, 60000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const toggleModalConfirmLocation = () => {
@@ -69,18 +75,14 @@ const HomeScreen = () => {
   const Payment = () => {
     navigation.navigate('Payment');
   }
+  
+  const cancel = () => {
+    navigation.navigate('Login');
+  }
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.head}>
-          <Entypo
-            name="menu"
-            size={20}
-            style={styles.menuIcon}
-            onPress={() => navigation.openDrawer()}
-          />
-          <EvilIcons name="bell" size={20} style={styles.menuIcon} />
-        </View>
+       <Header/>
         <Map />
         <View style={styles.targetLocation}>
           <MaterialCommunityIcons name="target" size={20} style={{color:'white'}} />
@@ -179,7 +181,7 @@ const HomeScreen = () => {
                   </View>
                 </View>
                 <View style={{marginTop: 10, flexDirection:"row"}}>
-                  <OutlineButton text={'Cancel'} btnStyle={{width:"50%", marginHorizontal:2}}/>
+                  <OutlineButton text={'Cancel'} btnStyle={{width:"50%", marginHorizontal:2}} onPress={cancel}/>
                   <SubmitButton text={'Accept'}  btnStyle={{width:"50%", marginHorizontal:2}} onPress={toggleModalConfirmLocation}/>
                 </View>
               </View>

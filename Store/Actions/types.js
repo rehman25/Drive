@@ -1,3 +1,0 @@
-export const LOGIN_DATA_START = 'LOGIN_DATA_START'
-export const LOGIN_DATA = 'LOGIN_DATA'
-export const LOGIN_DATA_END = 'LOGIN_DATA_START'

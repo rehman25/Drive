@@ -1,15 +1,16 @@
-import { combineReducers, compose, createStore, applyMiddleware } from "redux";
-import ReduxThunk from "redux-thunk";
-import Red_Login from './Reducer/login/index'
-
-
-const reducers = combineReducers({
-  Red_Login,
-
+// store.js
+import { configureStore } from '@reduxjs/toolkit';
+import counterReducer from './counterSlice';
+import authReducer from './authSlice';
+import postSlice from './authSignup'
+import OtpSlice from './authOtp'
+import PasswordSlice from './authSetPassword'
+export const store = configureStore({
+  reducer: {
+    counter: counterReducer,
+    auth: authReducer,
+    post: postSlice,
+    otp: OtpSlice,
+    pass: PasswordSlice
+  },
 });
-
-const composeEnhancers = window.REDUX_DEVTOOLS_EXTENSION_COMPOSE || compose;
-
-const store = createStore(reducers, {}, composeEnhancers(applyMiddleware(ReduxThunk)));
-
-export default store;

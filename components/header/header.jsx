@@ -14,7 +14,7 @@ const Header = ({
     const { width, height } = Dimensions.get('window');
     const navigation = useNavigation()
     const goBack = () => {
-        navigation.goBack("Home");
+        navigation.goBack();
     };
     const goforward= () => {
         navigation.navigate("PickCategoryCard");

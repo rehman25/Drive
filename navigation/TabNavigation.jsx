@@ -49,7 +49,6 @@ const TabNavigation = () => {
         options={{
           tabBarIcon: ({color, size, focused}) => (
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
-              {/* <Image source={!focused ? require('../images/home.png') : require('../images/home1.png')} style={{ width: 25, height: 20 ,objectFit:'contain' }} /> */}
               <HomeIcon
                 name="home"
                 style={{fontSize: 25, color: !focused ? '#7E57C2' : 'C2CCDE'}}

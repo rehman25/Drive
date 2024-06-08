@@ -5,8 +5,8 @@ import {
   Image,
   TouchableOpacity,
   Modal,
-  Textarea
-} from 'react-native';
+  Textarea,
+  SafeAreaView, ScrollView} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Header from '../../components/header/header';
 import Cust from '../../images/payment/cust.png';
@@ -20,6 +20,7 @@ import ProcessImage from '../../images/payment/processpayment.png';
 import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 import Icons from 'react-native-vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native';
+// import { ScrollView } from 'react-native-gesture-handler';
 
 const StarRating = ({maxStars = 5, onRatingChange}) => {
   
@@ -74,12 +75,13 @@ const Payment = () => {
   };
   const navigation = useNavigation()
   const GoToHome = () => {
-    navigation.navigate('HomeScreen');
+    navigation.navigate('HomeMap');
   }
   return (
+    <SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
       <Header backtoPage2={true} backtoPage={true} title={'back'} />
-      <View style={styles.ContentCont}>
+      <ScrollView style={styles.ContentCont}>
         <View style={styles.HeaderCust}>
           <View>
             <Image source={Cust} style={styles.iamge} />
@@ -132,13 +134,13 @@ const Payment = () => {
               <Text style={styles.cardExpire}>Expires:12/26</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.cardbox}>
+          {/* <TouchableOpacity style={styles.cardbox}>
             <Image source={Paypal} style={styles.iamgeVise} />
             <View>
               <Text style={styles.cardnumber}>Mailaddress@mail.com</Text>
               <Text style={styles.cardExpire}>Expires:12/26</Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity style={styles.cardbox}>
             <Image source={Cash} style={styles.iamgeVise} />
             <View>
@@ -146,10 +148,10 @@ const Payment = () => {
             </View>
           </TouchableOpacity>
         </View>
-        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <View style={{flex: 1, justifyContent: 'flex-end' }}>
           <SubmitButton text={'confirm'} onPress={toggleModal} />
         </View>
-      </View>
+      </ScrollView>
       <Modal
         animationType="slide"
         transparent={true}
@@ -263,6 +265,7 @@ const Payment = () => {
         </View>
       </Modal>
     </View>
+    </SafeAreaView>
   );
 };
 
@@ -524,12 +527,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.3,
   },
   container: {
-    flex: 1,
+    height: 1000,
     backgroundColor: '#fff',
     padding: 15,
   },
   ContentCont: {
-    flex: 1,
+    flex:1,
+
   },
   Profile: {
     flexDirection: 'row',

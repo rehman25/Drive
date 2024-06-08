@@ -4,9 +4,9 @@ import {NavigationContainer} from '@react-navigation/native';
 
 import TabNavigation from './TabNavigation';
 
-import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 
 import Carorsal from '../screens/Splash/Carorsal';
 import LocationEnable from '../screens/Splash/LocationEnable';
@@ -34,44 +34,41 @@ import Successfully from '../screens/Authentication/Successfully';
 import RegisterCar from '../screens/CarAuthentication/RegisterCar';
 import Massage from '../screens/Home/Massage';
 import Payment from '../screens/Home/Payment';
+import HomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const MainNavigation = () => {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const Drawer = createDrawerNavigator();
   
-
+  
   const Stack = createStackNavigator();
-  // useEffect(() => {
-  //   async function checkLoginStatus() {
+  const Drawer = createDrawerNavigator();
+  useEffect(() => {
+    async function checkLoginStatus() {
 
-  //     const value = await AsyncStorage.getItem("data");
-  //     console.log(value,"hello value")
-  //     if (value !== null) {
-  //       setIsLoggedIn(true);
-  //     } else {
-  //       setIsLoggedIn(false);
-  //     }
-  //   }
+      const value = await AsyncStorage.getItem("data");
+      console.log(value,"hello value")
+      if (value !== null) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    }
 
-  //   checkLoginStatus();
-  // }, []);
+    checkLoginStatus();
+  }, []);
 
   return (
     <NavigationContainer>
       {isLoggedIn ? (
-        <Drawer.Navigator
-          drawerContent={(props) => <CustomeDrawer {...props} />}
-          // screenOptions={{
-          //   drawerStyle: {
-          //     backgroundColor: '#c6cbef',
-          //     width: 240,
-          //   },
-          //   headerShown: false,
-          // }}
+        <Drawer.Navigator initialRouteName='HomeScreen'
+   
+          screenOptions={{ headerShown: false, }}
           >
-          <Drawer.Screen name="HomeScreen" component={TabNavigation} />
-          <Drawer.Screen name="History" component={History} />
-          <Drawer.Screen name="Complain" component={Complain} />
+             <Drawer.Screen name="HomeScreen" component={TabNavigation}/>
+        
+          <Drawer.Screen name="Complain"  component={Complain} />
+
+
           <Drawer.Screen name="Referal" component={Referal} />
           <Drawer.Screen name="AboutUs" component={Aboutus} />
           <Drawer.Screen name="HelpandSupport" component={HelpSupport} />
@@ -82,6 +79,7 @@ const MainNavigation = () => {
           </Drawer.Screen>
         </Drawer.Navigator>
       ) : (
+        
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
@@ -106,9 +104,8 @@ const MainNavigation = () => {
           <Stack.Screen name="AddCar" component={AddCar} />
           <Stack.Screen name="CarDetail" component={CarDetail} />
           <Stack.Screen name="Documention" component={Documention} />
-          <Stack.Screen name="Home" component={TabNavigation} />
-          <Stack.Screen name="Massage" component={Massage} />
-          <Stack.Screen name="Payment" component={Payment} />
+          
+
 
         </Stack.Navigator>
       )}

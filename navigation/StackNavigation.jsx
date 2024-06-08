@@ -6,6 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from '../screens/Home/HomeScreen';
 import Payment from '../screens/Home/Payment';
 import ChatScreen from '../screens/Home/ChatScreen';
+import Massage from '../screens/Home/Massage';
 
 
 const Stack = createStackNavigator();
@@ -14,7 +15,7 @@ const StackNavigation = () => {
     <Stack.Navigator screenOptions={{
         headerShown: false
         }}>
-        <Stack.Screen name="Map" component={HomeScreen} />
+        {/* <Stack.Screen name="Map" component={HomeScreen} /> */}
         <Stack.Screen name="Payment" component={Payment} />
         <Stack.Screen name="Chat" component={ChatScreen} />
         </Stack.Navigator>
@@ -25,9 +26,9 @@ const HomeNavigation = () => {
     <Stack.Navigator screenOptions={{
         headerShown: false
         }}>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        {/* <Stack.Screen name="ChatScreen" component={ChatScreen} /> */}
-        {/* <Stack.Screen name="Payment" component={Payment} /> */}
+          <Stack.Screen name="HomeMap" component={HomeScreen} />
+           <Stack.Screen name="Massage" component={Massage} />
+          <Stack.Screen name="Payment" component={Payment} />
         </Stack.Navigator>
   )
 }

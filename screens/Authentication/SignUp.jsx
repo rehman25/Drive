@@ -1,105 +1,203 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, View, Image, SafeAreaView, ScrollView, ActivityIndicator } from 'react-native';
+import React, { useState } from 'react';
 import Header from '../../components/header/header';
 import Theme from '../../assets/theme/Theme';
-import {SimpleInput, List} from '../../assets/input/input';
+import { SimpleInput, List,  } from '../../assets/input/input';
+import Countrypictker  from '../../assets/countrycode'
 import Icon from 'react-native-vector-icons/AntDesign';
-import {SubmitButton} from '../../assets/buttons/button';
+import { SubmitButton } from '../../assets/buttons/button';
 import Gmail from '../../images/signup/gmail.png';
-import Apple from '../../images/signup/Apple.png';
-import {useNavigation} from '@react-navigation/native';
-import Icons from '../../assets/Icon';
+import { useNavigation } from '@react-navigation/native';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+const schema = yup.object().shape({
+  name: yup.string().required('Name is required'),
+  email: yup.string().email('Invalid email').required('Email is required'),
+  phone_number: yup.string().required('Phone number is required'),
+});
 
 const SignUp = () => {
-  const Navigation = useNavigation();
-  const NavigationOtp = () => {
-    Navigation.navigate('Otp');
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const [error, setError] = useState('');
+  const [pending, setPending] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const navigation = useNavigation();
+
+  const submitForm = async (data) => {
+    try {
+      setPending(true);
+      const response = await fetch('https://driver.alitacode.com/api/driver/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          "name": data.name,
+          "email": data.email,
+          "phone_number": data.phone_number,
+        }),
+      });
+  
+   
+  
+      const result = await response.json();
+      navigation.navigate('Otp', { phone_number : data.phone_number });
+
+      console.log(result, 'result');
+  
+      if (response.ok) {
+        setPending(false);
+        setSuccess(true);
+      } else {
+        setPending(false);
+        setError(result.email?.[0] || result.phone_number?.[0] || 'Error occurred');
+      }
+    } catch (err) {
+      setPending(false);
+      setError('Something went wrong, please try again.');
+      console.log(err, 'sd');
+    }
   };
+  
+
   return (
-    <View style={styles.container}>
-      <Header backtoPage2={true} backtoPage={true} title={'back'} />
-      <View style={{marginTop: 5, flex: 0.1}}>
-        <Text style={styles.Heading}>
-          Sign up with your email or phone number
-        </Text>
-      </View>
-      <View
-        style={{
-          flex: 0.3,
-          alignContent: 'center',
-          justifyContent: 'flex-start',
-        }}>
-        <View>
-          <SimpleInput
-            viewStyle={{marginTop: 10}}
-            inputstyle={styles.SimpleInput}
-            placeholder={'Name'}
-            placeholderTextColor={'#D0D0D0'}
-          />
+    <SafeAreaView style={styles.container}>
+      {pending && (
+        <View style={styles.loaderContainer}>
+          <ActivityIndicator size="large" color={'#7E57C2'} />
         </View>
-        <View>
-          <SimpleInput
-            viewStyle={{marginTop: 10}}
-            inputstyle={styles.SimpleInput}
-            placeholder={'Email'}
-            placeholderTextColor={'#D0D0D0'}
-          />
-        </View>
-        <View>
-          <List
-            dropdownContainerStyle={styles.dropdownContainerStyle}
-            dropDownStyle={styles.dropDownStyle}
-            placeholder={'Gender'}
-            items={[
-              {label: 'Male', value: 'Male'},
-              {label: 'Female', value: 'Female'},
-            ]}
-          />
-        </View>
-      </View>
-      <View style={{flex: 0.2}}>
-        <View style={styles.CheckBox}>
-          <Icon name="checkcircleo" style={styles.CheckICon} />
-          <Text style={styles.CheckBoxText}>
-            By signing up. you agree to the <Text>Terms of service</Text> and{' '}
-            <Text>Privacy policy.</Text>
+      )}
+      <ScrollView style={{ height: '100%' }}>
+        <Header backtoPage2={true} backtoPage={true} title={'back'} />
+        <View style={{ marginTop: 5 }}>
+          <Text style={styles.Heading}>
+            Sign up with your email or phone number
           </Text>
         </View>
-        <View style={styles.BtnContainer}>
-          <SubmitButton
-            text={'Sign Up'}
-            buttonsty={styles.button}
-            onPress={NavigationOtp}
-          />
+        <View style={{ flex: 0.3, alignContent: 'center', justifyContent: 'flex-start' }}>
+          <View>
+            <Controller
+              name="name"
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <SimpleInput
+                  viewStyle={{ marginTop: 10 }}
+                  inputstyle={styles.SimpleInput}
+                  label={'Name'}
+                  value={value}
+                  placeholder={'Name'}
+                  setValues={onChange}
+                  onBlur={onBlur}
+                  placeholderTextColor={'#D0D0D0'}
+                />
+              )}
+            />
+            {errors.name && <Text style={styles.errorText}>{errors.name.message}</Text>}
+          </View>
+          <View>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <SimpleInput
+                  viewStyle={{ marginTop: 10 }}
+                  inputstyle={styles.SimpleInput}
+                  label={'Email'}
+                  placeholder={'Email'}
+                  value={value}
+                  setValues={onChange}
+                  onBlur={onBlur}
+                  placeholderTextColor={'#D0D0D0'}
+                />
+              )}
+            />
+            {errors.email && <Text style={styles.errorText}>{errors.email.message}</Text>}
+          </View>
+          <View>
+            <Controller
+              name="phone_number"
+              control={control}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <SimpleInput
+                  viewStyle={{ marginTop: 10 }}
+                  inputstyle={styles.SimpleInput}
+                  label={'Phone Number'}
+                  placeholder={'Phone Number'}
+                  value={value}
+                  setValues={onChange}
+                  onBlur={onBlur}
+                  placeholderTextColor={'#D0D0D0'}
+                />
+         
+
+              )}
+            />
+            {errors.phone_number && <Text style={styles.errorText}>{errors.phone_number.message}</Text>}
+          </View>
+          {error && <Text style={styles.errorText}>{error}</Text>}
         </View>
-      </View>
-      <View style={{flex: 0.1}}>
-        <View style={styles.orContainer}>
-          <Text style={styles.orText}>or</Text>
+        {/* <Countrypictker
+                 
+                /> */}
+        <View style={{ flex: 0.3, marginTop: 20 }}>
+          <View style={styles.CheckBox}>
+            <Icon name="checkcircleo" style={styles.CheckICon} />
+            <Text style={styles.CheckBoxText}>
+              By signing up, you agree to the <Text>Terms of service</Text> and <Text>Privacy policy.</Text>
+            </Text>
+          </View>
+          <View style={styles.BtnContainer}>
+            <SubmitButton
+              text={'Sign Up'}
+              buttonsty={styles.button}
+              onPress={handleSubmit(submitForm)}
+            />
+          </View>
         </View>
-      </View>
-      <View style={{flex: 0.2}}>
-        <View>
+        <View style={{ flex: 0.1 }}>
+          <View style={styles.orContainer}>
+            <Text style={styles.orText}>or</Text>
+          </View>
+        </View>
+        <View style={{ flex: 0.1, marginTop: 20 }}>
           <View style={styles.gmailContainer}>
             <Image source={Gmail} style={styles.Gmail} />
             <Text style={styles.gmailtext}>Sign up with Gmail</Text>
           </View>
+          <View style={{ marginTop: 35 }}>
+            <Text style={{ textAlign: 'center' }}>
+              Already have an account?
+              <Text style={{ ...Theme.Purple_color_f }}> Sign in</Text>
+            </Text>
+          </View>
         </View>
-        <View></View>
-        <View style={{marginTop: 35}}>
-          <Text style={{textAlign: 'center'}}>
-            Already have an account?
-            <Text style={{...Theme.Purple_color_f}}> Sign in</Text>
-          </Text>
-        </View>
-      </View>
-    </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 export default SignUp;
 
 const styles = StyleSheet.create({
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: 1,
+  },
+  loaderContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     padding: 15,
@@ -111,12 +209,20 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: Theme.Black_color_h,
   },
-  SimpleInput: {
-    borderWidth: 0.5,
+  NumberInput:{
     borderRadius: 6,
-    padding: 10,
     borderColor: Theme.borderColor,
     fontSize: 16,
+    width: '69%',
+    
+  },
+
+  SimpleInput: {
+    borderRadius: 6,
+    backgroundColor: "transparent",
+    borderColor: Theme.borderColor,
+    fontSize: 16,
+    marginTop: 10
   },
   dropDownStyle: {
     borderRadius: 6,
@@ -133,8 +239,6 @@ const styles = StyleSheet.create({
   CheckBox: {
     flexDirection: 'row',
     marginTop: 10,
-    // alignItems:"center",
-    // justifyContent:"center",
   },
   CheckBoxText: {
     marginHorizontal: 3,

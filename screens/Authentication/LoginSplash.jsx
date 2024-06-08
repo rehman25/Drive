@@ -4,6 +4,8 @@ import Logo from '../../images/splashScreen/WelcomeScreen.png'
 import { SubmitButton } from '../../assets/buttons/button'
 import { OutlineButton } from '../../assets/buttons/button'
 import { useNavigation } from '@react-navigation/native'
+import { useDispatch, useSelector } from 'react-redux'
+import { decrement, increment } from '../../store/counterSlice'
 
 
 const LoginSplash = () => {
@@ -12,10 +14,12 @@ const LoginSplash = () => {
     const handleLogin = () => {
         navigation.navigate('SignUp')
     }
+   
   return (
     
     <View style={styles.container}>
     <>
+  
         <View style={styles.logoContainer}>
           <Image source={Logo} style={styles.logo} />
             <View style={styles.textContainer}>

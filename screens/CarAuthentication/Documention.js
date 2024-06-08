@@ -17,9 +17,12 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import WaitingImage from '../../images/carAdd/waiting.png';
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const Documentation = () => {
   const [imageUri, setImageUri] = useState(null);
+  const [imageUri2, setImageUri2] = useState(null);
+  const [imageUri3, setImageUri3] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
   const [modalConfirmLocation, setModalConfirmLocation] = useState(false);4
@@ -31,16 +34,12 @@ const Documentation = () => {
 
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      navigation.navigate('Login')
-    }, 2000);
-  }, []);
 
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setOnboarding(true);
+        navigation.navigate('Login')
     }, 2500);
 
     const interval = setInterval(() => {
@@ -80,10 +79,48 @@ const Documentation = () => {
           console.log('ImagePicker Error: ', response.errorMessage);
         } else {
           setImageUri(response.assets[0].uri);
+          console.log(imageUri, 'd')
         }
       },
     );
   };
+  const openGallery2 = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        includeBase64: false,
+      },
+      response => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.errorCode) {
+          console.log('ImagePicker Error: ', response.errorMessage);
+        } else {
+          setImageUri2(response.assets[0].uri);
+          console.log(imageUri2, 'd')
+        }
+      },
+    );
+  };
+  const openGallery3 = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        includeBase64: false,
+      },
+      response => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+        } else if (response.errorCode) {
+          console.log('ImagePicker Error: ', response.errorMessage);
+        } else {
+          setImageUri3(response.assets[0].uri);
+        }
+      },
+    );
+  };
+
+
 
   const uploadImage = async () => {
     if (!imageUri) return;
@@ -130,20 +167,22 @@ const Documentation = () => {
         <Text style={styles.Heading}>Add Photos and other documents</Text>
       </View>
       <View style={styles.ImageContainer}>
-        <Text style={styles.headtext}>Upload Photos</Text>
-        <View style={styles.UploadBox}>
-          <Icon name="plus" />
-        </View>
-        <Text style={styles.headtext}>Upload Photos</Text>
-        <View style={styles.UploadBox}>
-          <Icon name="plus" />
-        </View>
-        <Text style={styles.headtext}>Upload Photos</Text>
-        <View style={styles.UploadBox}>
-          <Icon name="plus" />
-        </View>
-        {/* <Button title="Pick an image from gallery" onPress={openGallery} /> */}
-        {/* {imageUri && <Image source={{uri: imageUri}} style={styles.image} />} */}
+        <Text style={styles.headtext}>ID Front Side</Text>
+        <TouchableOpacity style={styles.UploadBox} onPress={openGallery} >
+          {imageUri ? <Image source={{uri:imageUri}} style={styles.image} /> : <Icon name="plus" size={24} />}
+          
+        </TouchableOpacity>
+        <Text style={styles.headtext}>ID Back Side</Text>
+        <TouchableOpacity style={styles.UploadBox} onPress={openGallery2} >
+          {imageUri2 ? <Image source={{uri:imageUri2}} style={styles.image} /> : <Icon name="plus" size={24} />}
+          
+        </TouchableOpacity>
+        <Text style={styles.headtext}>License Photo</Text>
+        <TouchableOpacity style={styles.UploadBox} onPress={openGallery3} >
+          {imageUri3 ? <Image source={{uri:imageUri3}} style={styles.image} /> : <Icon name="plus" size={24} />}
+          
+        </TouchableOpacity>
+        {/* <Button title="Pick an image from gallery" /> */}
         {/* <Button
           title="Upload Image"
           onPress={uploadImage}
@@ -170,6 +209,7 @@ const Documentation = () => {
           <View style={styles.modalViewConfirm}>
             <View style={{flex:0.6, margin:5, justifyContent:"center", alignItems:"center"}}>
              <Image source={WaitingImage} style={{width:100, height:100}} />
+               <Ionicons name='alarm-outline' size={35} style={styles.alrm} />
               <Text style={styles.Approval}>Please Wait For Approval</Text>
             </View>
             <View style={{flex:0.3, margin:5, justifyContent:"flex-start", alignItems:"center"}}>
@@ -186,6 +226,14 @@ const Documentation = () => {
 export default Documentation;
 
 const styles = StyleSheet.create({
+  alrm:{
+    color:"#ffffff",
+    position:"relative",
+    top:-67,
+    right:0,
+    fontWeight:"900",
+
+  },
   count:{
     ...Theme.Font_family,
     ...Theme.driver_para_font_color,
@@ -280,4 +328,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     marginTop: 25,
   },
+  image:{
+    width:'100%',
+    height:'100%',
+    borderRadius:6,
+    resizeMode:'cover',
+  }
 });

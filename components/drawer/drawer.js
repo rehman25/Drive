@@ -7,8 +7,8 @@ const drawer = ({props}) => {
   return (
     <View>
        <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
-      <DrawerItem label="Close Drawer" onPress={() => props.navigation.closeDrawer()} />
+         <DrawerItemList {...props}   />
+         <DrawerItem label="Close Drawer" onPress={() => props.navigation.closeDrawer()} />
     </DrawerContentScrollView>
     </View>
   )
